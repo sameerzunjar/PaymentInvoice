@@ -1,0 +1,13 @@
+hr {
+    color: #0000004f;
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+.add td {
+    color: #c5c4c4;
+    text-transform: uppercase;
+    font-size: 12px
+}
+.content {
+    font-size: 14px
+}

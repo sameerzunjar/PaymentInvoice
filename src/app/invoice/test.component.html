@@ -1,0 +1,41 @@
+<!-- *tdLoading="'invoice'" -->
+<div >
+    <!-- *ngIf="invoice && customer" -->
+    <mat-list >
+      <!-- {{invoice.id}} -->
+      <h3 md-subheader>Invoice ID: </h3>
+      
+      <mat-list-item>
+        
+        <!-- {{invoice.service}} -->
+        <h4 mat-divider></h4>
+        <p mat-divider>Service</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>date_range</mat-icon>
+        <!-- {{invoice.date | date}} -->
+        <h4 mat-divider></h4>
+        <p mat-divider>Date</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>schedule</mat-icon>
+        <!-- {{invoice.hours}} hours at {{invoice.rate | currency:'USD':true:'.0'}} -->
+        <h4 mat-divider></h4>
+        <p mat-divider>Hours and Rate</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>attach_money</mat-icon>
+        <!-- {{invoice.hours * invoice.rate | currency:'USD':true:'.0'}} -->
+        <h4 mat-divider></h4>
+        <p mat-divider>Total Invoiced</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon mat-list-icon>perm_identity</mat-icon>
+        <!-- {{customer.name}} -->
+        <h4 mat-divider></h4>
+        <p md-divider>Customer</p>
+      </mat-list-item>
+    </mat-list>
+    <!-- <button md-fab class="mat-fab-bottom-right fixed mat-accent mat-fab" routerLink="/invoices/{{invoice?.id}}/edit"><mat-icon>mode_edit</mat-icon></button> -->
+  </div>
+  

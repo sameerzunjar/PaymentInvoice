@@ -24,9 +24,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { AngularMaterialModule } from './angular-material.module';
 import { UploadComponent } from './upload/upload.component';
 import { InvoiceComponent } from './invoice/invoice.component';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { PsummaryComponent } from './psummary/psummary.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +41,7 @@ import { MatDividerModule } from '@angular/material/divider';
     WithdrawComponent,
     UploadComponent,
     InvoiceComponent,
+    PsummaryComponent,
     FooterComponent,
     HeaderComponent  
   ],
@@ -54,10 +53,7 @@ import { MatDividerModule } from '@angular/material/divider';
     HttpClientModule,
     BrowserAnimationsModule,
     AgGridModule,
-    AngularMaterialModule,
-    MatListModule,
-    MatIconModule,
-    MatDividerModule 
+    AngularMaterialModule
   ],
   providers: [RegisterService, LoginService, AuthService],
   bootstrap: [AppComponent]

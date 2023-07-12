@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
 
   title = 'angularmaterial';
   //Columns names, table data from datasource, pagination and sorting
-  columnsToDisplay: string[] = ['position', 'name', 'weight', 'symbol','valueDate','invoiceDate'];
+  columnsToDisplay: string[] = ['Position', 'Value Date', 'Total Amount', 'Invoice Number','Invoice Date'];
   dataSource = new MatTableDataSource<PeriodicElement>();
   @ViewChild(MatPaginator, {static: true}) paginator:any = MatPaginator;
   expandedElement: PeriodicElement | null | undefined;
@@ -141,19 +141,23 @@ export class HomeComponent implements OnInit {
         console.log(data.document);
         const ELEMENT_DATA: PeriodicElement[] = []; 
         let valDate = '';
+        let invoiceDate = '';
         data.document.entities.forEach(function(entity) {
           if (entity.type == 'due_date') {
             valDate = entity.normalizedValue.text;
           }
+          if (entity.type == 'invoice_date') {
+            invoiceDate = entity.normalizedValue.text;
+         }
+
         });
         ELEMENT_DATA.push({
           position: 1,
-          name: 'Hydrogen',
-          weight: 1.0079,
-          symbol: 'H',
-          description: `Hydrogen is a chemical element with symbol H and atomic number 1. With a standard
-            atomic weight of 1.008, hydrogen is the lightest element on the periodic table.`,
-          valueDate: valDate  
+          valueDate: valDate, 
+          totalAmount: '1000.0$',
+          invoiceNumber: 'INV1212',
+          supplierName: 'Aaditya',
+          invoiceDate: invoiceDate
         }); 
         this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
     });
@@ -162,12 +166,12 @@ export class HomeComponent implements OnInit {
 
   //Columns data types
 export interface PeriodicElement {
-  name: string;
   position: number;
-  weight: number;
-  symbol: string;
-  description: string;
   valueDate: string;
+  totalAmount: string;
+  invoiceNumber: string;
+  supplierName: string;
+  invoiceDate: string;
 }
 // const ELEMENT_DATA: PeriodicElement[] = [
 //   {

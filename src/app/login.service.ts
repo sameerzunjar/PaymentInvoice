@@ -17,7 +17,7 @@ export class LoginService {
     };
     const data = {
       loginStatus: true,
-      username: 'test'
+      username: userName
     }
     return of(data);
   }

@@ -24,6 +24,7 @@ export class PsummaryComponent {
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    console.log('in summary')
     
   }
 }

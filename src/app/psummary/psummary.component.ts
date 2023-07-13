@@ -21,7 +21,6 @@ import { PaymentSummary } from '../payment.summary';
 export class PsummaryComponent {
 
   paymentsArray: PaymentSummary[] = []
-  
   dataSource: MatTableDataSource<PaymentSummary>;
   constructor(private http: HttpClient, private pService: PaymentService){}
   ngOnInit() {
@@ -29,7 +28,6 @@ export class PsummaryComponent {
       {
         this.paymentsArray = payments;
         this.dataSource = new MatTableDataSource<PaymentSummary>(this.paymentsArray);
-        console.log('1', this.paymentsArray)
       });
   }
 

@@ -1,4 +1,4 @@
-export class PaymentSummary{
+export class    PaymentSummary{
     public id: number;
     public valueDate: Date;
     totalAmount: number;

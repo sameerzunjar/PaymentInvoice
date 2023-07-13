@@ -21,10 +21,29 @@
       <div class="card">
         <div class="card-body box-wrap">
           <div class="box-title transfer"><i class="fa-solid fa-money-bill-transfer"></i> Invoice Upload</div>
-          <app-upload></app-upload>
+          <mat-form-field>
+            <div>
+              <mat-toolbar>
+                <!-- Display files names [(ngModel)]="fileAttr"-->
+                <input [(ngModel)]="fileAttr" matInput readonly name="name" />
+                <!-- Browse Button -->
+                <button mat-flat-button color="primary">Browse File</button>
+              </mat-toolbar>
+              <!-- Fetch selected filed on change -->
+              <input
+                type="file"
+                #fileInput
+                id="uploadFile"
+                (change)="uploadFile($event)"
+                name="uploadFile"
+                multiple="multiple"
+                accept="image/*"
+              />
+            </div>
+          </mat-form-field>
           <p class="text-center">
             <br/>
-            <a class="btn btn-warning" href="/home">Upload</a>
+            <button class="btn btn-warning" (click)="getPayments()">Upload</button>
           </p>
         </div>
       </div>
@@ -35,7 +54,75 @@
       <div class="card">
         <div class="card-body box-wrap">
           <div class="box-title balance"><i class="fa-solid fa-hand-holding-dollar"></i> Payment Summary</div>
-          <app-psummary></app-psummary>
+          <table mat-table
+       [dataSource]="dataSource" multiTemplateDataRows
+       class="mat-elevation-z8">
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+    <th mat-header-cell *matHeaderCellDef> {{getColumnName(column)}} </th>
+    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+  </ng-container>
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <div class="example-element-detail" *matCellDef="let element" 
+           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+           <div class="mat-row">
+            <div class="mat-row">
+              <h5><b><u>Payment Details</u></b></h5>
+              <p mat-divider></p>
+            </div>
+          <div class="mat-row">
+            <div><b>Payment Infromation:</b></div>
+            <div>Items sold with {{element['invoiceNumber']}}</div>
+            <p mat-divider></p>
+          </div>
+          <div class="mat-row">
+            <div class="mat-ro"></div>
+            <div><b>Debtor Details:</b></div>
+            <div>Name: BMW</div>
+            <div>Contact Infromation: +911232324</div>
+            <div>Address: XYZ</div>
+            <p mat-divider></p>
+          </div>
+          <div class="mat-row">
+            <div><b>Creditor Details:</b></div>
+            <div>Name: {{element['supplierName']}}</div>
+            <div>Contact Infromation: +41 889 291 272</div>
+            <div>Account details (i): DE89370400440532013000  89%</div>
+            <div>Address: 221b Baker Street</div>
+            <p mat-divider></p>
+          </div>
+          <div class="mat-row">
+            <div><button class="btn btn-info">
+              View
+              </button>
+              &nbsp;<button class="btn btn-success">
+              Approve
+              </button>
+              &nbsp;<button class="btn btn-danger">
+                  Reject
+                  </button>
+              </div>
+          </div>
+        </div>
+      </div>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
           <!-- <div class="box-info"> </div> -->
           <!-- <p class="text-center">
            This your saving account balace, Deposit money to increase Savings!

@@ -57,7 +57,7 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
     BrowserAnimationsModule,
     AgGridModule,
-    HttpClientInMemoryWebApiModule.forRoot(DataService),
+    HttpClientInMemoryWebApiModule.forRoot(DataService, {passThruUnknownUrl: true}),
     AngularMaterialModule
   ],
   providers: [RegisterService, LoginService, AuthService, PaymentService, DatePipe],

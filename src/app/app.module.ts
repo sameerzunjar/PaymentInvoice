@@ -25,6 +25,10 @@ import { AngularMaterialModule } from './angular-material.module';
 import { UploadComponent } from './upload/upload.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { PsummaryComponent } from './psummary/psummary.component';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { DataService } from './data.services';
+import { PaymentService } from './payment.services';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,7 @@ import { PsummaryComponent } from './psummary/psummary.component';
     InvoiceComponent,
     PsummaryComponent,
     FooterComponent,
-    HeaderComponent  
+    HeaderComponent,  
   ],
   imports: [
     BrowserModule,
@@ -53,9 +57,10 @@ import { PsummaryComponent } from './psummary/psummary.component';
     HttpClientModule,
     BrowserAnimationsModule,
     AgGridModule,
+    HttpClientInMemoryWebApiModule.forRoot(DataService),
     AngularMaterialModule
   ],
-  providers: [RegisterService, LoginService, AuthService],
+  providers: [RegisterService, LoginService, AuthService, PaymentService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

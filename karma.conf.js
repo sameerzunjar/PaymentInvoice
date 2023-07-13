@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/user-portal'),
+      dir: require('path').join(__dirname, './coverage/db-invpay'),
       subdir: '.',
       reporters: [
         { type: 'html' },

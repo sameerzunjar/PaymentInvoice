@@ -1,5 +1,5 @@
 {
-  "name": "user-portal",
+  "name": "db-invpay",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -11,9 +11,9 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.0.0",
+    "@angular/cdk": "^14.0.0",
     "@angular/common": "^14.0.0",
     "@angular/compiler": "^14.0.0",
-    "@angular/cdk": "^14.0.0",
     "@angular/core": "^14.0.0",
     "@angular/forms": "^14.0.0",
     "@angular/material": "^14.0.0",
@@ -22,7 +22,10 @@
     "@angular/router": "^14.0.0",
     "ag-grid-angular": "^28.0.0",
     "ag-grid-community": "^28.0.0",
+    "angular-csv": "^1.0.0",
     "core-js": "^2.0.0",
+    "file-saver": "^2.0.5",
+    "ngx-csv": "^0.3.2",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.4.29",
     "tslib": "^2.3.0",
@@ -33,6 +36,7 @@
     "@angular/cli": "~14.0.0",
     "@angular/compiler-cli": "^14.0.0",
     "@types/jasmine": "~4.0.0",
+    "angular-in-memory-web-api": "^0.16.0",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

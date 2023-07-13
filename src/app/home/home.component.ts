@@ -1,10 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-
-import { TransferhistoryService } from '../transfer-history.service';
-import { TransactionService } from '../transaction.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
 import {animate, state, style, transition, trigger} from '@angular/animations';
@@ -49,45 +45,12 @@ export class HomeComponent implements OnInit {
   transfer = 0;
 
   constructor(public authService: AuthService,
-    public userService: UserService,
-    private transactionService: TransactionService,
-    private transferService: TransferhistoryService,
     private router: Router,
     private http: HttpClient,
     private pService: PaymentService) {
   }
 
   ngOnInit(): void {
-
-    this.userService.getUser(this.username).subscribe(res => {
-      this.savingAcc = res.savingsAccno;
-      this.primaryAcc = res.primaryAccno;
-      this.savingBalanceLocal = res.savingsBalance;
-      this.primaryBalanceLocal = res.primaryBalance;
-      localStorage.setItem("savingAccNo", this.savingAcc.toString());
-    });
-
-    this.transactionService.getTransactions(this.accNo).subscribe((res) => {
-      if (res) {
-        this.transaction.count = res.length;
-        res.forEach(item => {
-          if (item.action == 'deposit') {
-            this.transaction.deposit += item.amount;
-          } else {
-            this.transaction.withdrawl += item.amount;
-          }
-        });
-        this.transaction.total = this.transaction.withdrawl + this.transaction.deposit;
-      }
-    });
-
-    this.transferService.getTransferHistory(this.accNo).subscribe(res => {
-      if (res) {
-        res.forEach(item => {
-          this.transfer += item.amount;
-        })
-      }
-    });
 
     this.getPayments();
   }
@@ -99,9 +62,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  displayuserdetails() {
-    this.userService.getUser(this.username).subscribe(() => this.ngOnInit());
-  }
   addPayment(data: PaymentSummary) {
     this.pService.addPayment(data);
     this.pService.getPayments().subscribe(payments => 

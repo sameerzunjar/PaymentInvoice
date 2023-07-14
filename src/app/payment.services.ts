@@ -25,9 +25,7 @@ export class PaymentService{
     
       addPayment(data: PaymentSummary) {
         data.id=Math.floor((Math.random()*6)+1);
-        console.log(data)
-        data.invoiceDate=data.invoiceDate
-        data.valueDate=data.valueDate
+        console.log(data);
         this.http.post<PaymentSummary>(this.paymentsUrl, data).pipe(
           catchError((error: HttpErrorResponse) => {
             console.error(error);

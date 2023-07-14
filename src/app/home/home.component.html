@@ -3,18 +3,11 @@
     <div class="col-lg-6">
       <div class="card">
         <div class="card-body box-wrap laptop-bg">
-          <h4><b>Welcome to Deutsche {{username}} !</b></h4>
+          <h4><b>Welcome to dbINVPay<br/> {{username}} !</b></h4>
           <p>
-            We offer you actions like Transfer of money, 
-            <br>Checkbook request, Deposit,
-            Withdraw.
+            We offer easy<br/> Invoice to Payment processing.
           </p>
-          <br />
-          <p> This is your Saving <span class="fw-bold">A/C NO: {{ savingAcc }} </span> </p>
-          <p>
-            <a class="btn btn-info" href="/deposit"><i class="fa-solid fa-dollar"></i> Deposit Money</a>
-          </p>
-        </div>
+         </div>
       </div>
     </div>
     <div class="col-lg-6">
@@ -87,15 +80,15 @@
           <div class="mat-row">
             <div class="mat-ro"></div>
             <div><b>Ordering Party Details:</b></div>
-            <div>Name: {{element['supplierName']}}</div>
-            <div>Address: {{element['supplierAddress']}}</div>
+            <div>Name: {{element['receiverName']}}</div>
+            <div>Address: {{element['receiverAddress']}}</div>
             <p mat-divider></p>
           </div>
           <div class="mat-row">
             <div><b>Beneficiary Party Details:</b></div>
             <div>Name: {{element['supplierName']}}</div>
-            <div>Account details (i): {{element['receiverAccountNumber']}}</div>
-            <div>Address: {{element['receiverAddress']}}</div>
+            <div>Account details (i): {{element['supplierAccountNumber']}}</div>
+            <div>Address: {{element['supplierAddress']}}</div>
             <p mat-divider></p>
           </div>
           <div class="mat-row">

@@ -122,9 +122,9 @@ export class HomeComponent implements OnInit {
       let receiverAddress: String;
       let supplierAddress: String;
       let receiverName: String;
-      let receiverAccountNumber: String;
-      let receiverBankName: String;
-      let receiverBic: String;
+      let supplierAccountNumber: String;
+      let supplierBankName: String;
+      let supplierBic: String;
 
       
       //const authHeader = {'Content-Type':'application/text'};
@@ -135,7 +135,6 @@ export class HomeComponent implements OnInit {
       //const headers = { 'Authorization': 'Bearer ya29.a0AbVbY6MINGiyZvBEFIAaVxlPmiFdqhOBCj8PovcbejcK7_GATrAPeug2lhKacfFBq-9-AtgKG4vnNqIQJEpPfJNloNHsq1h8DkiR4F-8KQ4DY6QhYhfuzS5takyWb68iqbX8V9ekQVY9cxv3DWbalGju21njHqgeqcqQh2QL5QvS3RpNhhhweu2rMDRNOH5PEhrKqWMQYwBUxztUAxTkXU2m62rsAfDJztMJUqoUbGDP8HKBexXu9nCIJ5iZUF2OnK62No4LAt8h3at4LOVJzyNHVCAngHL6s5-DJZYVGkKDJxldyfEdbq4mMLAGTS79zM65KMuSOYAsY4eEFG01kUzBNjyBtbwRbQCbvW3qQBDz_Gh0cg-Ht4fHvNq92-1JgiR83YyJJ2mP63nUBBzfHqiFcY8aCgYKAeoSARMSFQFWKvPldP8h--7tc3cdb5JOpIJDWw0418', 'Content-Type': 'application/json; charset=utf-8' };
       const body = { "inlineDocument": {"mimeType": this.mimeType , "content": imgBase64Path} };
       this.http.post<any>('https://us-documentai.googleapis.com/v1/projects/367518486544/locations/us/processors/37135df78beb4591:process', body, { headers }).subscribe(data => {
-          console.log(data.document);
           data.document.entities.forEach(function(entity) {
             if (entity.type == 'due_date') {
               valueDate=entity.normalizedValue.text
@@ -165,18 +164,18 @@ export class HomeComponent implements OnInit {
               receiverName = entity.mentionText;
             }
           });
-          this.readMl().subscribe(data =>
+          this.readMl(supplierName).subscribe(data =>
             {
               console.log(data)
-            receiverAccountNumber = JSON.parse(data).iban;
-            receiverBic=JSON.parse(data).bic;
-            receiverBankName=JSON.parse(data).bankName;
+              supplierAccountNumber = JSON.parse(data).iban;
+              supplierBic=JSON.parse(data).bic;
+              supplierBankName=JSON.parse(data).bankName;
 
             console.log('receiverAccountNumber', JSON.parse(data).iban);
             this.pService.addPayment(
             new PaymentSummary(0, valueDate, totalAmount, currency, invoiceNumber,
-              supplierName,invoiceDate,'Pending Approval', receiverAddress, supplierAddress, receiverName, receiverAccountNumber,
-              receiverBankName, receiverBic)
+              supplierName,invoiceDate,'Pending Approval', receiverAddress, supplierAddress, receiverName, supplierAccountNumber,
+              supplierBankName, supplierBic)
           );
           this.pService.getPayments().subscribe(payments => console.log(payments));
             }
@@ -193,8 +192,9 @@ export class HomeComponent implements OnInit {
       this.router.navigateByUrl('/viewInvoice', { state: {data: data, username: this.username }});
     }
 
-    readMl(){
-      const requestbody = {"name":"karli alderson","address":"'144, nulsen circuit, iowanna, tingalpa, nsw, 3139'","mobile":"+49 19510826","email":"karli.alderson57@yahoo.com"};
+    readMl(supplierName: String){
+      const requestbody = {"name":supplierName,"address":"","mobile":"","email":""};
+      console.log('requestbody', requestbody);
       const rheaders = {'Content-Type': 'application/json; charset=utf-8' ,
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Credentials': 'true',

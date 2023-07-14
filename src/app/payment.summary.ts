@@ -10,15 +10,15 @@ export class PaymentSummary{
     receiverAddress: String;
     supplierAddress: String;
     receiverName: String;
-    receiverAccountNumber: String;
-    receiverBankName: String;
-    receiverBic: String;
+    supplierAccountNumber: String;
+    supplierBankName: String;
+    supplierBic: String;
   
     constructor(id:number, valueDate: Date,totalAmount: number,currency: 
         String,invoiceNumber: String,supplierName: 
         String,invoiceDate: Date,status: String, receiverAddress: String,
-        supplierAddress: String, receiverName: String, receiverAccountNumber: String,
-        receiverBankName: String, receiverBic: String){
+        supplierAddress: String, receiverName: String, supplierAccountNumber: String,
+        supplierBankName: String, supplierBic: String){
         this.id=id;
         this.valueDate=valueDate;
         this.totalAmount=totalAmount;
@@ -30,8 +30,8 @@ export class PaymentSummary{
         this.receiverAddress=receiverAddress;
         this.supplierAddress=supplierAddress;
         this.receiverName=receiverName;
-        this.receiverAccountNumber=receiverAccountNumber;
-        this.receiverBankName=receiverBankName;
-        this.receiverBic=receiverBic;
+        this.supplierAccountNumber=supplierAccountNumber;
+        this.supplierBankName=supplierBankName;
+        this.supplierBic=supplierBic;
     }
   }

@@ -10,13 +10,20 @@ export class DataService implements InMemoryDbService {
     return {
       payment_request: [
         {
+            id: 123456789,
             valueDate: this.datePipe.transform('07/13/2023','MM-dd-yyyy'),
             totalAmount: 10021,
             currency: 'EUR',
             invoiceNumber: 'INV12121',
             supplierName: 'Inv International Ltd',
             invoiceDate: this.datePipe.transform('07/08/2023','MM-dd-yyyy'),
-            status: 'Approved'
+            status: 'Approved',
+            receiverAddress: 'Frankfurt, Germany',
+            supplierAddress: 'Pune, India',
+            receiverName: 'TCS',
+            receiverAccountNumber: 'TE123938293990',
+            receiverBankName: 'Test Bank',
+            receiverBic: 'NHXXXXXX'
         }
       ]
     }

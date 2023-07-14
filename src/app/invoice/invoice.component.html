@@ -1,4 +1,4 @@
-<div class="container mt-2">
+<div class="container mt-2 Serif">
   <!-- <button class="btn btn-primary" (click)="downloadAsPDF()">Export To PDF</button> -->
 </div>
 <div class="container mt-5 mb-3" id="pdfTable" #pdfTable>
@@ -6,87 +6,84 @@
       <div class="col-md-8">
           <div class="card">
               <div class="d-flex flex-row p-2">
-                  <div class="d-flex flex-column"> <span class="font-weight-bold">Tax Invoice</span> <small>INV-001</small> </div>
-                  
-              </div>
-              
+                  <div class="d-flex flex-column"> <h3><span class="font-weight-bold">Payment Details
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{data.status}}
+                  </span></h3> </div>
+              </div>              
               <hr>
               <div class="table-responsive p-2">
-                  <table class="table table-borderless">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr class="content">
+                          <td>
+                              <b>Payment Amount:</b> {{data.currency}}&nbsp;{{data.totalAmount}}</td><td>
+                              <b>Payment Method:</b> Domestic Fund Transfer
+                            </td>
+                        </tr><tr class="content">
+                            <td>
+                              <b>Value Date:</b> {{data.valueDate}}</td><td>
+                              <b>Purpose of Payment:</b> Payment against {{data.invoiceNumber}}
+                          </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+              <div class="table-responsive p-2">
+                  <table class="table table-borderless" title="Party Details:">
+                    <title>Party Details:</title>
                       <tbody>
+                        <tr class="add"><h4><b><u>Party Details:</u></b></h4></tr>
                           <tr class="add">
-                              <td>To</td>
-                              <td>From</td>
+                              <td class="content"><b>Ordering Party Details</b></td>
+                              <td class="content"><b>Beneficiary Party Details</b></td>
                           </tr>
                           <tr class="content">
-                              <td class="font-weight-bold">Google <br>Attn: Jassa Smith Pymont <br>Australia</td>
-                              <td class="font-weight-bold">Facebook <br> Attn: Jassa Right Polymont <br> USA</td>
+                            <td>
+                                <b>Name:</b> {{data.receiverName}}<br>
+                                <b>Account Number:</b> DE78700700100202508800<br>
+                                <b>Address:</b> {{data.receiverAddress}}<br>
+                                <b>Bank Name:</b> Deutsche Bank
+                            </td>
+                            <td>
+                                <b>Name:</b> {{data.supplierName}}<br>
+                                <b>Account Number:</b> {{data.receiverAccountNumber}} <br>
+                                <b>Address:</b> {{data.supplierAddress}}<br>
+                                <b>Bank Name:</b> {{data.receiverBankName}} <br>
+                                <b>SWIFT BIC:</b> {{data.receiverBic}}
+                            </td>
                           </tr>
                       </tbody>
                   </table>
               </div>
               <hr>
               <div class="products p-2">
-                  <table class="table table-borderless">
+                <table class="table table-borderless" title="Invoice Details:">
+                    <title>Invoice Details:</title>
                       <tbody>
-                          <tr class="add">
-                              <td>Description</td>
-                              <td>Days</td>
-                              <td>Price</td>
-                              <td class="text-center">Total</td>
+                        <tr class="add"><h4><b><u>Invoice Details:</u></b></h4></tr>
+                          <tr class="content">
+                              <td class="font-weight-bold"><b>Invoice ID:</b> {{data.invoiceNumber}}</td>
+                              <td class="font-weight-bold"><b>Invoice Date:</b> {{data.invoiceDate}}</td>
                           </tr>
                           <tr class="content">
-                              <td>Website Redesign</td>
-                              <td>15</td>
-                              <td>$1,500</td>
-                              <td class="text-center">$22,500</td>
-                          </tr>
-                          <tr class="content">
-                              <td>Logo & Identity</td>
-                              <td>10</td>
-                              <td>$1,500</td>
-                              <td class="text-center">$15,000</td>
-                          </tr>
-                          <tr class="content">
-                              <td>Marketing Collateral</td>
-                              <td>3</td>
-                              <td>$1,500</td>
-                              <td class="text-center">$4,500</td>
-                          </tr>
+                            <td class="font-weight-bold"><b>Purchase Order:</b> PO623873634543</td>
+                        </tr>
                       </tbody>
                   </table>
               </div>
-              <hr>
-              <div class="products p-2">
-                  <table class="table table-borderless">
-                      <tbody>
-                          <tr class="add">
-                              <td></td>
-                              <td>Subtotal</td>
-                              <td>GST(10%)</td>
-                              <td class="text-center">Total</td>
-                          </tr>
-                          <tr class="content">
-                              <td></td>
-                              <td>$40,000</td>
-                              <td>2,500</td>
-                              <td class="text-center">$42,500</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <hr>
-              <div class="address p-2">
-                  <table class="table table-borderless">
-                      <tbody>
-                          <tr class="add">
-                              <td>Bank Details</td>
-                          </tr>
-                          <tr class="content">
-                              <td> Bank Name : ADS BANK <br> Swift Code : 00220022 <br> Account Holder : Jassa Pepper <br> Account Number : 6953PO789 <br> </td>
-                          </tr>
-                      </tbody>
-                  </table>
+              <div class="mat-row">
+                <div><button class="btn btn-success" *ngIf="username === 'Admin' && data['status'] === 'Pending Approval'" (click)="approvePayment(data)">
+                  Approve
+                  </button>
+                  &nbsp;<button class="btn btn-danger" *ngIf="username === 'Admin' && data['status'] === 'Pending Approval'" (click)="rejectPayment(data)">
+                      Reject
+                      </button>
+                  </div>
               </div>
           </div>
       </div>

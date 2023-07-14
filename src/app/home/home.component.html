@@ -43,7 +43,7 @@
           </mat-form-field>
           <p class="text-center">
             <br/>
-            <button class="btn btn-warning" (click)="getPayments()">Upload</button>
+            <button class="btn btn-warning" mat-raised-button [class.spinner]="loading" [disabled]="loading" (click)="getPayments()">Upload</button>
           </p>
         </div>
       </div>
@@ -86,28 +86,26 @@
           </div>
           <div class="mat-row">
             <div class="mat-ro"></div>
-            <div><b>Debtor Details:</b></div>
-            <div>Name: BMW</div>
-            <div>Contact Infromation: +911232324</div>
-            <div>Address: XYZ</div>
-            <p mat-divider></p>
-          </div>
-          <div class="mat-row">
-            <div><b>Creditor Details:</b></div>
+            <div><b>Ordering Party Details:</b></div>
             <div>Name: {{element['supplierName']}}</div>
-            <div>Contact Infromation: +41 889 291 272</div>
-            <div>Account details (i): DE89370400440532013000  89%</div>
-            <div>Address: 221b Baker Street</div>
+            <div>Address: {{element['supplierAddress']}}</div>
             <p mat-divider></p>
           </div>
           <div class="mat-row">
-            <div><button class="btn btn-info">
+            <div><b>Beneficiary Party Details:</b></div>
+            <div>Name: {{element['supplierName']}}</div>
+            <div>Account details (i): {{element['receiverAccountNumber']}}</div>
+            <div>Address: {{element['receiverAddress']}}</div>
+            <p mat-divider></p>
+          </div>
+          <div class="mat-row">
+            <div><button class="btn btn-info" (click)="viewInvoice(element)">
               View
               </button>
-              &nbsp;<button class="btn btn-success">
+              &nbsp;<button class="btn btn-success" *ngIf="username === 'Admin' && element['status'] === 'Pending Approval'" (click)="approvePayment(element)">
               Approve
               </button>
-              &nbsp;<button class="btn btn-danger">
+              &nbsp;<button class="btn btn-danger" *ngIf="username === 'Admin' && element['status'] === 'Pending Approval'" (click)="rejectPayment(element)">
                   Reject
                   </button>
               </div>

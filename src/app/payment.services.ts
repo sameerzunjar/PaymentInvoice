@@ -34,5 +34,10 @@ export class PaymentService{
             return throwError(error);
           })
         ).subscribe();
-      }  
+      }
+      
+      editPayment(data: PaymentSummary) {
+        console.log(data);
+        this.http.put(this.paymentsUrl + data.id, data).subscribe();
+      }
     }

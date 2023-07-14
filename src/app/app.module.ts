@@ -11,7 +11,6 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { AngularMaterialModule } from './angular-material.module';
 import { UploadComponent } from './upload/upload.component';
 import { InvoiceComponent } from './invoice/invoice.component';
@@ -39,7 +38,6 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AgGridModule,
     HttpClientInMemoryWebApiModule.forRoot(DataService, {passThruUnknownUrl: true}),
     AngularMaterialModule
   ],

@@ -48,6 +48,12 @@ uploadFile(imgFile: any) {
     let invoiceNumber: String;
     let supplierName: String;
     let invoiceDate: Date;
+    let receiverAddress: String;
+    let supplierAddress: String;
+    let receiverName: String;
+    let receiverAccountNumber: String;
+    let receiverBankName: String;
+    let receiverBic: String;
     const headers = { 'Authorization': 'Bearer ya29.a0AbVbY6P9IbmuIDvK3GVBTy0KP-E_wSjGxqqMyXDRZqIE5CkCWm1OAWVDSEQ4t3dgLFlma3G2LEzNGddMAysfvyB3kvJS09iizXkEJkBjRKcQIRWadf2asDc5P9ii0FpCHNjD1RtAyEGA8creUskR1OEjbPMYpakaCgYKAX0SARESFQFWKvPlgtlSWq3TayFM1eF-bpGMGA0166', 'Content-Type': 'application/json; charset=utf-8' };
     const body = { "inlineDocument": {"mimeType": this.mimeType , "content": imgBase64Path} };
     this.http.post<any>('https://us-documentai.googleapis.com/v1/projects/367518486544/locations/us/processors/37135df78beb4591:process', body, { headers }).subscribe(data => {
@@ -62,7 +68,8 @@ uploadFile(imgFile: any) {
         });
         this.pService.addPayment(
           new PaymentSummary(0, valueDate, totalAmount, currency, invoiceNumber,
-            supplierName,invoiceDate,'Pending Approval')
+            supplierName,invoiceDate,'Pending Approval', receiverAddress, supplierAddress, receiverName,
+            receiverAccountNumber, receiverBankName, receiverBic)
         );
         this.pService.getPayments().subscribe(payments => console.log(payments));
     });

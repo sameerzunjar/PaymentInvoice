@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PaymentSummary } from '../payment.summary';
+import { PaymentService } from '../payment.services';
 
 @Component({
   selector: 'app-invoice',
@@ -6,8 +8,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./invoice.component.css']
 })
 export class InvoiceComponent implements OnInit {
+  data: PaymentSummary;
+  username: String;
+  paymentsArray: PaymentSummary[];
   ngOnInit(): void {
-    
+
+    this.data = history.state.data;
+    this.username = history.state.username;
+  }
+
+  constructor(private pService: PaymentService) {}
+
+  approvePayment(data: PaymentSummary) {
+    data.status='Approved';
+    this.pService.editPayment(data);
+    this.pService.getPayments().subscribe(payments => 
+      {
+        this.paymentsArray = payments;
+      });
+      this.paymentsArray.forEach(payment => 
+        {
+          if(payment.id === data.id) {
+            this.data=payment;
+          }
+        });
+  }
+
+  rejectPayment(data: PaymentSummary) {
+    data.status='Rejected';
+    this.pService.editPayment(data);
+    this.pService.getPayments().subscribe(payments => 
+      {
+        this.paymentsArray = payments;
+      });
+      this.paymentsArray.forEach(payment => 
+        {
+          if(payment.id === data.id) {
+            this.data=payment;
+          }
+        });
   }
   // invoice: Invoice;
   // customer: Customer;

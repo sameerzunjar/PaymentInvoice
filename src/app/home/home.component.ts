@@ -25,7 +25,9 @@ const GCP_DOC_API = 'https://us-documentai.googleapis.com/v1/projects/3675184865
 export class HomeComponent implements OnInit {
 
   imgBase64Path: string;
+  accessToken: String = '';
   mimeType: string;
+  loading = false;
   @ViewChild('fileInput') fileInput: ElementRef;
   fileAttr = 'Choose File';
   paymentsArray: PaymentSummary[] = []
@@ -62,8 +64,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  addPayment(data: PaymentSummary) {
-    this.pService.addPayment(data);
+  approvePayment(data: PaymentSummary) {
+    data.status='Approved';
+    this.pService.editPayment(data);
+    this.pService.getPayments().subscribe(payments => 
+      {
+        this.paymentsArray = payments;
+        this.dataSource = new MatTableDataSource<PaymentSummary>(this.paymentsArray);
+      });
+  }
+
+  rejectPayment(data: PaymentSummary) {
+    data.status='Rejected';
+    this.pService.editPayment(data);
     this.pService.getPayments().subscribe(payments => 
       {
         this.paymentsArray = payments;
@@ -76,6 +89,7 @@ export class HomeComponent implements OnInit {
   }
 
   uploadFile(imgFile: any) {
+    this.loading = true;
     if (imgFile.target.files && imgFile.target.files[0]) {
       this.fileAttr = '';
       this.mimeType = imgFile.target.files[0].type;
@@ -95,22 +109,30 @@ export class HomeComponent implements OnInit {
     } else {
       this.fileAttr = 'Choose File';
     }
+    this.loading = false;
   }
   
-    uploadFileEvt(imgBase64Path: String) {
+    async uploadFileEvt(imgBase64Path: String) {
       let valueDate: Date;
       let totalAmount: number;
       let currency: String;
       let invoiceNumber: String;
       let supplierName: String;
       let invoiceDate: Date;
+      let receiverAddress: String;
+      let supplierAddress: String;
+      let receiverName: String;
+      let receiverAccountNumber: String;
+      let receiverBankName: String;
+      let receiverBic: String;
 
-      let accessToken: String
-      const authHeader = {'Metadata-Flavor':'Google'};
-      this.http.get('http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token', {headers:authHeader})
-      .subscribe(data => accessToken=data['access_token']);
-      const headers = { 'Authorization': 'Bearer '+accessToken, 'Content-Type': 'application/json; charset=utf-8' };
-      //const headers = { 'Authorization': 'Bearer ya29.a0AbVbY6M7yi2uwN5ItbaUsCGVs8BBlCd9b9E2xZOHdrvKu5ayso15H3N8XO6_rR49_VQ4f7eZoJe90j1fTg-hghs26wUjrqJZ7fIEf_OdTkFuac_9mYAFwVlccHnVFbjwjrNAab2imX7aujrG8xOzetqlGS0dtE93AzH03XGykCSixOr3qHfrVuXHWGZ10cbEN8nWNcJhVmH-sQahS25o8GS0UGW5Yx3Po_hFxeOJAbd3FFSLw8-Y17HbfuOtcXzHtMBjE5g_jNSko-s8EfXUj0KQ_0ywN-W23GDlsnnD9vWzZDrglkilWnrg9S3QqSUOP_bpIwqI2maBAvXRlvXrrvXGP97URk_ckExktHZlnmi8Ff1MQeZ0jprigli1-AGFO8TsZ9T7oEvGG45pWQGQP3A2Dr0aCgYKAZ0SARESFQFWKvPlqYHSvtVlZ1DKuOvoDrXaXg0418', 'Content-Type': 'application/json; charset=utf-8' };
+      
+      //const authHeader = {'Content-Type':'application/text'};
+      this.getAuthToken();
+      await new Promise(f => setTimeout(f, 1000));
+      console.log('token', this.accessToken);
+      const headers = { 'Authorization': 'Bearer '+ this.accessToken, 'Content-Type': 'application/json; charset=utf-8' };
+      //const headers = { 'Authorization': 'Bearer ya29.a0AbVbY6MINGiyZvBEFIAaVxlPmiFdqhOBCj8PovcbejcK7_GATrAPeug2lhKacfFBq-9-AtgKG4vnNqIQJEpPfJNloNHsq1h8DkiR4F-8KQ4DY6QhYhfuzS5takyWb68iqbX8V9ekQVY9cxv3DWbalGju21njHqgeqcqQh2QL5QvS3RpNhhhweu2rMDRNOH5PEhrKqWMQYwBUxztUAxTkXU2m62rsAfDJztMJUqoUbGDP8HKBexXu9nCIJ5iZUF2OnK62No4LAt8h3at4LOVJzyNHVCAngHL6s5-DJZYVGkKDJxldyfEdbq4mMLAGTS79zM65KMuSOYAsY4eEFG01kUzBNjyBtbwRbQCbvW3qQBDz_Gh0cg-Ht4fHvNq92-1JgiR83YyJJ2mP63nUBBzfHqiFcY8aCgYKAeoSARMSFQFWKvPldP8h--7tc3cdb5JOpIJDWw0418', 'Content-Type': 'application/json; charset=utf-8' };
       const body = { "inlineDocument": {"mimeType": this.mimeType , "content": imgBase64Path} };
       this.http.post<any>('https://us-documentai.googleapis.com/v1/projects/367518486544/locations/us/processors/37135df78beb4591:process', body, { headers }).subscribe(data => {
           console.log(data.document);
@@ -133,13 +155,53 @@ export class HomeComponent implements OnInit {
             if (entity.type == 'supplier_name') {
               supplierName = entity.mentionText;
             }
+            if (entity.type == 'receiver_address') {
+              receiverAddress = entity.mentionText;
+            }
+            if (entity.type == 'supplier_address') {
+              supplierAddress = entity.mentionText;
+            }
+            if (entity.type == 'receiver_name') {
+              receiverName = entity.mentionText;
+            }
           });
-          this.pService.addPayment(
+          this.readMl().subscribe(data =>
+            {
+              console.log(data)
+            receiverAccountNumber = JSON.parse(data).iban;
+            receiverBic=JSON.parse(data).bic;
+            receiverBankName=JSON.parse(data).bankName;
+
+            console.log('receiverAccountNumber', JSON.parse(data).iban);
+            this.pService.addPayment(
             new PaymentSummary(0, valueDate, totalAmount, currency, invoiceNumber,
-              supplierName,invoiceDate,'Pending Approval')
+              supplierName,invoiceDate,'Pending Approval', receiverAddress, supplierAddress, receiverName, receiverAccountNumber,
+              receiverBankName, receiverBic)
           );
           this.pService.getPayments().subscribe(payments => console.log(payments));
+            }
+            );
       });
+    }
+
+  private getAuthToken(): any {
+    this.http.get('https://us-central1-hack-team-ainomads.cloudfunctions.net/function-2', { responseType: 'text' })
+      .subscribe(data => this.accessToken = data.toString());
+  }
+
+    viewInvoice(data: PaymentSummary){
+      this.router.navigateByUrl('/viewInvoice', { state: {data: data, username: this.username }});
+    }
+
+    readMl(){
+      const requestbody = {"name":"karli alderson","address":"'144, nulsen circuit, iowanna, tingalpa, nsw, 3139'","mobile":"+49 19510826","email":"karli.alderson57@yahoo.com"};
+      const rheaders = {'Content-Type': 'application/json; charset=utf-8' ,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods':'POST',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Max-Age': '600' };
+    return this.http.post<any>('https://enrichment-service-3fqmg2esia-uc.a.run.app', requestbody, { headers: rheaders });
     }
 
   title = 'angularmaterial';
